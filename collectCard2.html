@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1.0,maximum-scale=1.0,user-scalable=no, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./fonts/iconfonts_VZFBS/iconfont.css">
+  <link rel="stylesheet" href="./css/animate.min.css">
+  <link rel="stylesheet" href="./css/weui.css">
+  <link rel="stylesheet" href="./css/jquery-weui.min.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <script src="./js/lib/jquery.min.js"></script>
+  <script src="./js/lib/jquery-weui.min.js"></script>
+  <script src="./js/lib/auto.js"></script>
+  <script src="./js/lib/mock.js"></script>
+  <script src="./js/myMock.js"></script>
+  <title>集卡活动</title>
+</head>
+
+<body class="collect_card">
+  <div class="red_packets">
+    <!-- <div class="single_red_packet wait_open">
+      <div>
+        <img src="./img/red_packet.png">
+      </div>
+      <div>
+        <img src="./img/red_packet222222222.png">
+      </div>
+    </div> -->
+
+  </div>
+  <div class="scale_red_packet">
+  </div>
+  <div class="open_btn">
+    <div>
+      <div>開</div>
+      <span>×
+        <i></i>
+      </span>
+    </div>
+  </div>
+  <div class="info">
+    <div class="activity_title"></div>
+    <div class="activity_time">活动时间：
+      <span></span>
+    </div>
+  </div>
+  <div class="bottom_btn">
+    <div class="activity_rules_btn" onclick="openActivityDialog();">活动规则</div>
+    <div class="my_ticket_address">我的电子券</div>
+  </div>
+  <div class="activity_rules">
+    <div class="rule_icon">
+      <img src="./img/rule_icon.png">
+      <div class="rule_title">活动规则</div>
+      <div class="rule_container">
+        <div class="text_title">活动时间:</div>
+        <div class="rule_activity_time"></div>
+        <div class="text_title">活动规则:</div>
+        <ul type="1">
+          <li>活动期间,每周五、周六微信支付消费满30元,即可100%享受随机立减优惠;</li>
+          <li>2、 活动名额有限，先到先得，用完即止。</li>
+          <li>3、 每个自然人身份用户每周最高可享受1次优惠；同一微信号、同一手机号码、同一银行卡号、同一身份证号码、同一手机设备，符合其中</li>
+          <li>4、 享受优惠的订单若发生退货，相应的优惠根据退货总额同比例扣除。</li>
+        </ul>
+      </div>
+      <div class="close_rule_container" onclick="closeActivityDialog();">
+        <i class="iconfont icon-guanbi1"></i>
+      </div>
+    </div>
+  </div>
+  <div class="mask"></div>
+  <div class="finally_prize hide">
+    <img src="./img/red_packet_body.png">
+    <div class="red_packet_ticket" style="background: url('./img/red_packet_ticket.png'); background-size: cover">
+      <!-- <img src="./img/red_packet_ticket.png"> -->
+      <div class="ticket_content">
+        <span class="sale_money">500.00</span>
+        <span class="unit">元</span>
+      </div>
+    </div>
+    <div class="open_loading hide">领取中 ...</div>
+    <div class="use_need hide">满200元使用，仅限产品使用满200元使用，仅限产品使用满200元使用，仅限产品使用满200元使用，仅限产品使用</div>
+    <div class="get_success_text hide">领取成功</div>
+  </div>
+  <div class="error hide">
+    <i class="iconfont icon-fail"></i>
+    <br />
+    <br />
+    <span></span>
+  </div>
+</body>
+<script>
+
+  $(function () {
+    // $.showNewLoading("#FFF");
+    enterPageGetData();
+    initActivityDialog();
+    // $(".activity_rules_btn").click(function () {
+    //   $(".mask").show();
+    //   $(".activity_rules").css({ "visibility": "visible", "overflow": "visible", "width": "13rem", "height": "15.5rem", "transform": "translate(0px, 0px)" }).find("*").hide();
+    //   setTimeout(function () {
+    //     $(".activity_rules *").show();
+    //   }, 500);
+    // })
+    // $(".close_rule_container").click(function () {
+    //   console.log(Math.abs(ruleBtnInfo.width / 2 - ruleDialog.offset().left))
+    //   $(".activity_rules").css({ "width": "0", "height": "0", "transform": "translate(" + Math.abs(ruleBtnInfo.width / 2 - ruleDialog.offset().left) + "px, " + Math.abs(ruleBtnInfo.position.top - ruleDialogInfo.position.top - ruleDialogInfo.height / 2) + "px)", "overflow": "hidden" });
+    //   $(".mask").hide();
+    // })
+  })
+  // 初始化活动规则弹窗
+  function initActivityDialog() {
+    $(".activity_rules").addClass("close_rules").css({ "transform": "translate(" + Math.abs(ruleBtnInfo.width / 2 - ruleDialog.offset().left + 45) + "px, " + Math.abs(ruleBtnInfo.position.top - ruleDialogInfo.position.top - ruleDialogInfo.height / 2) + "px)" });
+  }
+  var ruleBtn = $(".activity_rules_btn");
+  var ruleBtnInfo = new GetElementInfo(ruleBtn.position(), ruleBtn.width(), ruleBtn.height());
+  var ruleDialog = $(".activity_rules");
+  var ruleDialogInfo = new GetElementInfo(ruleDialog.position(), ruleDialog.width(), ruleDialog.height());
+  // 打开活动规则弹窗
+  function openActivityDialog() {
+    $(".mask").show();
+    $(".activity_rules").removeClass("close_rules").addClass("open_rules").css({ "transform": "translate(0px, 0px)" }).find("*").hide();
+    setTimeout(function () {
+      $(".activity_rules *").show();
+    }, 300);
+  }
+  // 关闭活动规则弹窗
+  function closeActivityDialog() {
+    $(".activity_rules").removeClass("open_rules").addClass("close_rules").css({ "transform": "translate(" + Math.abs(ruleBtnInfo.width / 2 - ruleDialog.offset().left) + "px, " + Math.abs(ruleBtnInfo.position.top - ruleDialogInfo.position.top - ruleDialogInfo.height / 2) + "px)" });
+    $(".mask").hide();
+  }
+
+  var opening = false;
+  var eventID = "";
+  var cardCount = -1;
+  // 进入页面获取数据
+  function enterPageGetData() {
+    $.ajax({
+      url: "card/enterCollectEvent.html",
+      type: "post",
+      dataType: "json",
+      success: function (res) {
+        var data = res.data.event;
+        cardCount = data.cardCount;
+        // 初始化页面数据
+        if (data.pageConfig.event_bg) {
+          $(".collect_card").css("background-image", "url(" + data.pageConfig.event_bg + ")");
+        } else {
+          $(".collect_card").css("background-image", "url(./img/bg_collect_card.png)");
+        }
+        $(".activity_title").text(data.title);
+        $(".activity_time span").text(data.startDate + " — " + data.endDate);
+        $(".rule_activity_time").text(data.startDate + " — " + data.endDate);
+        eventID = data.eventID;
+        // 活动规则
+        var remarks = data.remark.split("\n");
+        var liText = "";
+        $.each(remarks, function (index, item) {
+          liText += "<li>" + (index + 1) + "、" + item + "</li>";
+        })
+        $(".rule_container ul").html(liText);
+        // 生成红包
+        var str = "";
+        var cardCover = data.pageConfig.card_pics;
+        if (data.defaultPage === "N") {
+          // 如果不使用默认红包
+          $.each(cardCover, function (i, item) {
+            str += createRedPacket(item.card_cover, item.card_bg);
+          })
+        } else {
+          // 如果使用默认红包
+          for (var i = 0; i < data.cardCount; i++) {
+            if (data.cardCount > 3) {
+              str += createRedPacket("./img/red_packet_small.png", "./img/red_packet_result.png");
+            } else {
+              str += createRedPacket("./img/red_packet.png", "./img/red_packet_result.png");
+            }
+          }
+        }
+        $(".red_packets").html(str);
+        // 根据红包个数调整样式
+        editRedPacketStyle();
+        if (res.code === 0) {
+          // 更新按钮样式
+          if (res.data.remainCount !== 0) {
+            $(".open_btn>div").addClass("can_open");
+          }
+          editButtonStatus(res.data.openCount, res.data.remainCount, cardCount);
+          $(".single_red_packet:lt(" + res.data.openCount + ")").removeClass("wait_open").addClass("opened").find(".card_bg").show();
+        } else if (res.code === -1) {
+          errorStatus(res.msg);
+        } else {
+          errorStatus();
+        }
+        $.hideNewLoading();
+      },
+      error: function () {
+        errorStatus();
+      }
+    })
+  }
+  // 点击开红包
+  $(".open_btn").on("click", ".can_open", function () {
+    if (opening === false && $(".single_red_packet.wait_open").length !== 0) {
+      opening = true;
+      // $.showNewLoading("rgba(0, 0, 0, 0.2)");
+      $.ajax({
+        url: "card/turnCard.html",
+        type: "post",
+        data: { "eventID": eventID },
+        dataType: "json",
+        success: function (res) {
+          $.hideNewLoading();
+          if (res.code === 0) {
+            openRedPacket(res.data.openCount, res.data.remainCount, cardCount);
+          } else if (res.code === -1) {
+            // $.toast(res.msg, "forbidden");
+            errorStatus(res.msg, "canClick")
+            opening = false;
+          } else {
+            // $.toast("打开红包失败", "forbidden");
+            errorStatus(res.msg, "canClick")
+            opening = false;
+          }
+        },
+        error: function (e) {
+          // $.toast("打开红包失败", "forbidden");
+          errorStatus(res.msg, "canClick")
+          opening = false;
+        }
+      })
+    } else {
+      return;
+    }
+  })
+  // 点击拆红包
+  $(".open_btn").on("click", ".openedAll", function getFinallyResult() {
+    // 克隆，让原始div消失
+    if ($(".finally_prize.clone").length === 0) {
+      $(".finally_prize").clone(true).addClass("clone").css({ "visibility": "visible", "zIndex": "999" }).appendTo($("body"));
+    } else {
+      return;
+    }
+    $(".open_btn").addClass("opening");
+    $(".finally_prize:eq(0)").css({ "zIndex": "-1", "visibility": "hidden" });
+    $(".mask, .finally_prize.clone, .open_loading").show();
+    $.ajax({
+      url: "card/collectTicket.html",
+      type: "post",
+      dataType: "json",
+      success: function (res) {
+        if (res.code === 0) {
+          var data = res.data.ticket;
+          if (data.goodsLimit === "N" && data.ticketType === "V") {
+            $(".ticket_content").find(".sale_money").text(data.ticketFee / 100).end().find(".unit").text("元");
+            $(".use_need").text("消费满" + (data.targetFee / 100) + "元可用");
+          } else if (data.goodsLimit === "N" && data.ticketType === "D") {
+            $(".ticket_content").find(".sale_money").text(data.discRate / 10).end().find(".unit").text("折");
+            $(".use_need").text("消费满" + (data.targetFee / 100) + "元可用");
+          } else if (data.goodsLimit === "Y") {
+            $(".ticket_content").find(".sale_money").text("单品券").end().find(".unit").text("");
+            $(".use_need").text("购买指定商品可用");
+          }
+          // 电子券出现动画
+          $(".finally_prize.clone .red_packet_ticket").css({ "transform": "translate(0, 0)", "height": "5.5rem", "line-height": "5.5rem" });
+          setTimeout(function () {
+            // 电子券出现完毕后修改其层级
+            $(".finally_prize.clone .red_packet_ticket").css("z-index", "155");
+            setTimeout(function () {
+              // 电子券完整显示后显示底部文字
+              $(".open_loading").hide();
+              $(".finally_prize.clone .use_need, .finally_prize.clone .get_success_text").show();
+              $(".mask").click(function () {
+                clickMask();
+              });
+            }, 300)
+          }, 900)
+        } else if (res.code === -1) {
+          // getTicketFail(res.msg);
+          errorStatus(res.msg, "canClick")
+        } else {
+          // getTicketFail();
+          errorStatus(res.msg, "canClick")
+        }
+      },
+      error: function () {
+        // getTicketFail();
+        errorStatus(res.msg, "canClick")
+      }
+    })
+  })
+  // 根据红包个数调整红包样式
+  function editRedPacketStyle() {
+    $(".single_red_packet:last").addClass("last_red_packet");
+    if ($(".single_red_packet").length > 3) {
+      $(".red_packets").attr("id", "more_than_three");
+      $(".open_btn").css("margin-top", "0.7rem");
+      $(".scale_red_packet").css({ "width": "6.2rem", "height": "8.7rem" });
+    }
+    if ($(".single_red_packet").length === 4) {
+      $(".single_red_packet:odd").addClass("special_margin_right");
+      $(".single_red_packet:even").addClass("special_margin_left");
+    }
+    if ($(".single_red_packet").length === 5) {
+      $(".single_red_packet:eq(0)").addClass("special_margin_left");
+      $(".single_red_packet:eq(1)").addClass("special_margin_right");
+    }
+  }
+  // 根据后台数据创建红包
+  function createRedPacket(card_cover, card_bg) {
+    var html = '<div class="single_red_packet wait_open"><div>' +
+      '<img src="' + card_cover + '">' +
+      '</div><div>' +
+      '<img src="' + card_cover + '">' +
+      '</div><div class="card_bg hide">' +
+      '<img src="' + card_bg + '">' +
+      '</div></div>';
+    return html;
+  }
+  // 页面加载请求错误
+  function errorStatus(errorMessage, canClick) {
+    $(".mask").show().css("backgroundColor", "rgba(0, 0, 0, 0.2)");
+    $(".finally_prize.clone").remove();
+    errorMessage ? $(".error").show().find("span").text(errorMessage) : $(".error").show().find("span").text("加载失败，请稍后重试");
+    console.log($(".error span").text().length)
+    if ($(".error span").text().length > 11) {
+      $(".error").css("text-align", "left").find("i").css({"margin-left": "50%", "transform": "translate(-50%)"});
+    } else {
+      $(".error").css("text-align", "center").find("i").css({"margin-left": "0", "transform": "translate(0)"});
+    }
+    $(".open_btn span i").text("0");
+    $.hideNewLoading();
+    if (canClick === "canClick") {
+      $(".mask").one("click", function () {
+        $(".mask, .error").hide();
+        window.location.href=window.location.href+"?reload="+10000*Math.random();
+      })
+    }
+  }
+  // 获取元素的部分信息
+  function GetElementInfo(position, width, height) {
+    this.position = position;
+    this.width = width;
+    this.height = height;
+  }
+  // 开红包事件
+  function openRedPacket(openCount, remainCount, cardCount) {
+    $(".mask").show();
+    // 改变按钮状态，更新剩余次数
+    editButtonStatus(openCount, remainCount, cardCount)
+    $(".open_btn").addClass("opening");
+    console.log($(".single_red_packet.wait_open:eq(0)").width(), $(".single_red_packet.wait_open:eq(0)").height());
+    $(".single_red_packet.wait_open:eq(0)").clone(true).appendTo($("body"));
+    if ($(".single_red_packet").length > 3) {
+      $(".single_red_packet.wait_open:last, .single_red_packet.wait_open:last div").height("5.185rem");
+    } else {
+      $(".single_red_packet.wait_open:last, .single_red_packet.wait_open:last div").height("6.8rem");
+    }
+    console.log($(".single_red_packet.wait_open:last").width(), $(".single_red_packet.wait_open:last").height());
+    $(".single_red_packet.wait_open:eq(0)").css("visibility", "hidden");
+    // 获取当前红包的信息
+    var currentRedPacket = $(".single_red_packet.wait_open:eq(0)");
+    var currentRedPacketInfo = new GetElementInfo(currentRedPacket.position(), currentRedPacket.width(), currentRedPacket.height());
+    // 获取目标红包位置的信息
+    var targetRedPacket = $(".scale_red_packet");
+    var targetRedPacketInfo = new GetElementInfo(targetRedPacket.position(), targetRedPacket.width(), targetRedPacket.height());
+    $(".single_red_packet.wait_open:eq(0)").removeClass("wait_open").addClass("opened")
+    // 将克隆的红包位置固定到原始红包位置
+    $(".single_red_packet:last").addClass("clone").css({ "top": currentRedPacketInfo.position.top, "left": currentRedPacketInfo.position.left });
+    // console.log($(".clone").width(), $(".clone").height())
+    // 获取到克隆的红包到目标红包之间的距离
+    var moveDistance = {
+      distanceX: $(".scale_red_packet").offset().left - $(".clone").offset().left,
+      distanceY: $(".scale_red_packet").offset().top - $(".clone").offset().top
+    }
+
+    // 红包弹出动画
+    $(".clone").addClass("clone_red_packet").css({ "transition": "all .3s", "left": "50%", "top": targetRedPacketInfo.position.top, "width": targetRedPacketInfo.width, "height": targetRedPacketInfo.height }).children().css({ "transition": "all .3s", "width": targetRedPacketInfo.width, "height": targetRedPacketInfo.height });
+    // 红包旋转动画
+    setTimeout(function () {
+      $(".clone").css({ "transition": "all 1.5s", "transform": "translateZ(1000px) rotateY(-540deg)" });
+    }, 400)
+    // 旋转完毕
+    setTimeout(function () {
+      // 旋转完毕显示结果
+      // $(".clone .card_bg").show();
+      $(".clone div:eq(1)").show().children().attr("src", $(".clone .card_bg").children().attr("src"));
+      // 结果展示片刻后回到原位置
+      setTimeout(function () {
+        // $(".open_btn").removeClass("opening");
+        editButtonStatus(openCount, remainCount, cardCount)
+        $(".mask").hide();
+        // 回到原位置动画
+        $(".clone").removeClass("clone_red_packet").css({ "transition": "all .3s", "transform": "translateZ(0) rotateY(-540deg)", "top": currentRedPacketInfo.position.top, "left": currentRedPacketInfo.position.left, "width": currentRedPacketInfo.width, "height": currentRedPacketInfo.height }).children().css({ "width": currentRedPacketInfo.width, "height": currentRedPacketInfo.height });
+        // 回到原位置之后
+        setTimeout(function () {
+          $(".opened:last .card_bg").show();
+          // 销毁克隆的红包
+          $(".clone").remove();
+          // 如果所有红包全都被打开
+          if ($(".single_red_packet:last").hasClass("opened")) {
+            $(".open_btn>div").removeClass("can_open").addClass("openedAll").find("span").hide().end().find("div").text("拆");
+          }
+          $(".opened").css("visibility", "visible");
+          opening = false;
+        }, 300)
+      }, 500)
+    // }, 2200);
+    }, 1680);
+  }
+  // 修改按钮状态
+  function editButtonStatus(openCount, remainCount, cardCount) {
+    console.log(openCount, remainCount, cardCount)
+    var openEnd = openCount === cardCount ? true : false;
+    if (remainCount > 0 && !openEnd) {
+      // 黄色开
+      $(".open_btn").removeClass("opening").children().addClass("can_open").removeClass("openedAll").find("div").text("開").end().find("span").show().find("i").text(remainCount);
+    } else if (remainCount === 0 && !openEnd) {
+      // 灰色开
+      $(".open_btn").addClass("opening").children().removeClass("openedAll can_open").find("div").text("開").end().find("span").show().find("i").text(remainCount);
+    } else if (openEnd) {
+      // 黄色拆
+      $(".open_btn").removeClass("opening").children().addClass("openedAll").find("span").hide().end().find("div").text("拆");
+    } else if (!openEnd) {
+      // 灰色拆
+      $(".open_btn").addClass("opening").children().addClass("openedAll").find("span").hide().end().find("div").text("拆");
+    }
+  }
+  // 拆开红包失败
+  function getTicketFail(message) {
+    message ? $(".open_loading").text(message) : $(".open_loading").text("领取失败,请稍后重试");
+    $(".mask").one("click", function () {
+      $(".finally_prize.clone").remove();
+      $(".mask").hide();
+    })
+  }
+  // 最终开奖结果出现后给遮罩层添加事件
+  function clickMask() {
+    var myTicketAddress = $(".my_ticket_address");
+    var myTicketAddressInfo = new GetElementInfo(myTicketAddress.position(), myTicketAddress.width(), myTicketAddress.height());
+    // 电子券缩小动画
+    $(".finally_prize.clone").css({ "padding": "0", "overflow": "hidden", "transform": "translate(" + (myTicketAddressInfo.position.left + myTicketAddressInfo.width / 3) + "px, " + (myTicketAddressInfo.position.top - myTicketAddressInfo.height - 100) + "px)", "width": "0", "height": "0" });
+    $(".mask").hide();
+    setTimeout(function () {
+      $(".finally_prize.clone").remove();
+      $(".mask").unbind("click");
+      $(".open_btn").removeClass("opening");
+      // window.location.reload();
+      // window.location=location;
+      // enterPageGetData()
+      window.location.href=window.location.href+"?reload="+10000*Math.random();
+    }, 600);
+  };
+  // 活动规则弹窗的显示隐藏
+  // function showHideActivityRules(isShow) {
+  //   if (isShow === true) {
+  //     $(".activity_rules").removeClass("bounceOutDown").show().addClass("bounceInUp").find(".rule_container").scrollTop(0);
+  //     $(".mask").show();
+  //   } else {
+  //     $(".activity_rules").removeClass("bounceInUp").addClass("bounceOutDown");
+  //     $(".mask").hide();
+  //   }
+  //   // $(".activity_rules").removeClass("bounceInUp bounceOutDown");
+  // }
+
+  
+</script>
+<script>
+  function fun(f2) {
+    if (f2) {
+      f2();
+    }
+  }
+  var f2 = function() {
+    console.log(111111111);
+  }
+  fun(f2)
+</script>
+</html>
