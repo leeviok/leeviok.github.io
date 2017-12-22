@@ -1207,7 +1207,8 @@ body.collect_card .activity_rules {
   position: fixed;
   background-color: #fff;
   left: 50%;
-  margin: 5.62962963rem 0 0 -6.41481481rem;
+  top: 5.62962963rem;
+  margin: 0 0 0 -6.41481481rem;
   border-radius: 0.35555556rem;
   box-shadow: 0 0.11851852rem 8px rgba(0, 0, 0, 0.3);
   z-index: 999;
