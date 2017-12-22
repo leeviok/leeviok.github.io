@@ -1276,20 +1276,23 @@ body.collect_card .activity_rules .close_rule_container i {
 }
 body.collect_card .mask {
   display: none;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   z-index: 10;
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.3);
 }
 body.collect_card .finally_prize {
   width: 12.59259259rem;
   height: 8.87407407rem;
   padding-top: 0.2962963rem;
-  position: absolute;
+  position: fixed;
   transition: all .6s;
   left: 50%;
-  margin: 7.55555556rem 0 0 -6.41481481rem;
+  top: 7.55555556rem;
+  margin: 0 0 0 -6.41481481rem;
   border-radius: 0.41481481rem;
   box-shadow: 0 0.11851852rem 8px rgba(0, 0, 0, 0.3);
   z-index: 999;
