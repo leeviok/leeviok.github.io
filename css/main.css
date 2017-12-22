@@ -1204,7 +1204,7 @@ body.collect_card .activity_rules {
   visibility: hidden;
   width: 12.82962963rem;
   height: 15.55555556rem;
-  position: absolute;
+  position: fixed;
   background-color: #fff;
   left: 50%;
   margin: 5.62962963rem 0 0 -6.41481481rem;
@@ -1276,8 +1276,8 @@ body.collect_card .activity_rules .close_rule_container i {
 }
 body.collect_card .mask {
   display: none;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   z-index: 10;
   position: fixed;
   top: 0;
@@ -1378,7 +1378,7 @@ body.collect_card .finally_prize .open_loading {
 }
 body.collect_card .error {
   font-size: 0.74074074rem;
-  position: absolute;
+  position: fixed;
   z-index: 999;
   top: 35%;
   width: 50%;
